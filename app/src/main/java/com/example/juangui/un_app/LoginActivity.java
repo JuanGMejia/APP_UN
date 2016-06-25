@@ -4,17 +4,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.Settings;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     Button botonLogin;
@@ -25,16 +27,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     int vehiR;
     String pass;
     String name;
+    Firebase mRef;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    protected void onStart() {
+        super.onStart();
         botonLogin=(Button) findViewById(R.id.login);
-        botonLogin.setOnClickListener(this);
         createAccount=(TextView) findViewById(R.id.Create);
-        createAccount.setOnClickListener(this);
         username=(EditText) findViewById(R.id.username);
         passw=(EditText) findViewById(R.id.passw);
+        mRef=new Firebase("https://unapp-c52f0.firebaseio.com/condition");
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Object data = dataSnapshot.getValue();
+                mTextFieldCondition.setText
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        })
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        botonLogin.setOnClickListener(this);
+        createAccount.setOnClickListener(this);
     }
 
 
