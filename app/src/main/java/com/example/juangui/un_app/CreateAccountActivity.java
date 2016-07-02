@@ -1,20 +1,35 @@
 package com.example.juangui.un_app;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class CreateAccountActivity extends AppCompatActivity {
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+public class CreateAccountActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText user,pass,pass2;
     CheckBox car,moto;
-
-
+    private String FIREBASE_URL="https://unapp-c52f0.firebaseio.com";
+    Firebase firebase=new Firebase(FIREBASE_URL);
+    int vehi;
+    Button botoncreate;
+    String name;
+    String passw;
+    String passw2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,33 +40,93 @@ public class CreateAccountActivity extends AppCompatActivity {
         pass2=(EditText) findViewById(R.id.pass2);
         car=(CheckBox) findViewById(R.id.car);
         moto=(CheckBox) findViewById(R.id.moto);
+        Firebase.setAndroidContext(this);
+        botoncreate=(Button) findViewById(R.id.button2);
+        botoncreate.setOnClickListener(this);
+
     }
 
-    public void Save(View v){
-        String name=user.getText().toString();
-        String passw=pass.getText().toString();
-        String passw2=pass2.getText().toString();
-        int vehi=0;
-        if(car.isChecked()){
-            vehi++;
-        }
-        if(moto.isChecked()){
-            vehi+=2;
-        }
+    @Override
+    public void onClick(View v) {
 
-        DB base= new DB(this,"Base",null,1);
-        SQLiteDatabase db= base.getWritableDatabase();
-        if(db!=null){
-            ContentValues file= new ContentValues();
-            file.put("username",name);
-            file.put("password",passw);
-            file.put("Vehicle",vehi);
-            long i=db.insert("users",null,file);
-            if(i>0){
-                Toast.makeText(this,"Account created!!",Toast.LENGTH_SHORT).show();
-            }
+        switch (v.getId()){
+            case R.id.button2:
+                name=user.getText().toString();
+                passw=pass.getText().toString();
+                passw2=pass2.getText().toString();
+                if(passw.equals(passw2)) {
+                    vehi = 0;
+                    if (car.isChecked()) {
+                        vehi++;
+                    }
+                    if (moto.isChecked()) {
+                        vehi += 2;
+                    }
+
+                    firebase.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            if (snapshot.hasChild(name)) {
+                                AlertDialog.Builder alerta = new AlertDialog.Builder(CreateAccountActivity.this);
+                                alerta.setMessage("user already exists")
+                                        .setCancelable(false)
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                AlertDialog alert = alerta.create();
+                                alert.setTitle("Alert");
+                                alert.show();
+                            }
+                            else {
+                                firebase = new Firebase(FIREBASE_URL).child(name);
+                                firebase.child("password").setValue(passw);
+                                firebase.child("vehicle").setValue(vehi);
+                                Toast.makeText(CreateAccountActivity.this, "Account created!!", Toast.LENGTH_SHORT).show();
+                                int x=1;
+                                while(x<10000){
+                                    x++;
+                                }
+                                Intent intent=new Intent(CreateAccountActivity.this,LoginActivity.class);
+                                startActivity(intent);
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
+                }
+                else{
+                    AlertDialog.Builder alerta = new AlertDialog.Builder(CreateAccountActivity.this);
+                    alerta.setMessage("password does not match")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = alerta.create();
+                    alert.setTitle("Alert");
+                    alert.show();
+                }
+
+                break;
+
+
+            default:
+                break;
         }
     }
+
+
 
 
 }

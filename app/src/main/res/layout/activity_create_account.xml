@@ -62,7 +62,6 @@
         android:layout_height="wrap_content"
         android:text="Create"
         android:id="@+id/button2"
-        android:onClick="Save"
         android:layout_marginTop="48dp"
         android:layout_below="@+id/moto"
         android:layout_centerHorizontal="true" />
