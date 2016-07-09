@@ -17,7 +17,7 @@
         android:id="@+id/textView4"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="50dp" />
+        android:textSize="40dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -34,37 +34,41 @@
         android:layout_height="wrap_content"
         android:text="Motorcycle"
         android:id="@+id/moto"
-        android:layout_below="@+id/car"
-        android:layout_alignLeft="@+id/car"
-        android:layout_alignStart="@+id/car" />
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/textView5"
+        android:layout_alignRight="@+id/pass2"
+        android:layout_alignEnd="@+id/pass2" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Car"
         android:id="@+id/car"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/user"
-        android:layout_alignStart="@+id/user" />
+        android:layout_alignTop="@+id/moto"
+        android:layout_alignLeft="@+id/pass2"
+        android:layout_alignStart="@+id/pass2" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vehicle"
         android:id="@+id/textView5"
-        android:layout_above="@+id/car"
-        android:layout_alignRight="@+id/car"
-        android:layout_alignEnd="@+id/car"
-        android:textColor="#070505" />
+        android:textColor="#070505"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/car"
+        android:layout_toEndOf="@+id/car"
+        android:layout_marginLeft="21dp"
+        android:layout_marginStart="21dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create"
         android:id="@+id/button2"
-        android:layout_marginTop="48dp"
-        android:layout_below="@+id/moto"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/pass2"
+        android:layout_alignEnd="@+id/pass2"
+        android:layout_marginBottom="21dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -72,12 +76,10 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/pass"
+        android:hint="Password"
         android:layout_below="@+id/user"
-        android:layout_alignRight="@+id/user"
-        android:layout_alignEnd="@+id/user"
-        android:layout_alignLeft="@+id/user"
-        android:layout_alignStart="@+id/user"
-        android:hint="Password" />
+        android:layout_alignLeft="@+id/pass2"
+        android:layout_alignStart="@+id/pass2" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -85,11 +87,18 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/pass2"
+        android:hint="Repeat password"
         android:layout_below="@+id/pass"
-        android:layout_alignRight="@+id/pass"
-        android:layout_alignEnd="@+id/pass"
-        android:layout_alignLeft="@+id/pass"
-        android:layout_alignStart="@+id/pass"
-        android:hint="Repeat password" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/cancelar"
+        android:layout_alignTop="@+id/button2"
+        android:layout_alignLeft="@+id/car"
+        android:layout_alignStart="@+id/car" />
 
 </RelativeLayout>

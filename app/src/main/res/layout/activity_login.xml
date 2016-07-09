@@ -30,11 +30,12 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Share UN Car"
         android:id="@+id/textView"
-        android:layout_marginTop="25dp"
-        android:textSize="50dp"
+        android:textSize="40dp"
         android:textColor="#58952f"
         android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignRight="@+id/passw"
+        android:layout_alignEnd="@+id/passw"
+        android:layout_marginTop="25dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,7 +45,8 @@
         android:id="@+id/textView2"
         android:textSize="30dp"
         android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/login"
+        android:layout_alignStart="@+id/login"
         android:layout_marginTop="25dp" />
 
     <EditText
@@ -57,7 +59,8 @@
         android:textSize="20dp"
         android:hint="Password"
         android:layout_above="@+id/login"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="13dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,20 +71,17 @@
         android:textSize="20dp"
         android:onClick="onClick"
         android:clickable="true"
-        android:layout_marginBottom="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
         android:id="@+id/login"
+        android:layout_marginBottom="33dp"
         android:layout_above="@+id/Create"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignStart="@+id/textView2"
-        android:layout_marginBottom="50dp" />
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -92,9 +92,10 @@
         android:hint="Username"
         android:background="#dddbdb"
         android:textSize="20dp"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/passw"
-        android:layout_alignStart="@+id/passw" />
+        android:layout_above="@+id/passw"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:layout_marginBottom="28dp" />
 
 
 </RelativeLayout>
