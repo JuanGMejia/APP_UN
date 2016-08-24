@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText passw,username;
     String pass;
     String name;
+    String LicenseV;
     private String FIREBASE_URL="https://unapp-c52f0.firebaseio.com";
     Firebase firebase;
 
@@ -33,8 +34,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
-        Log.d("valor: ", String.valueOf(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)));
 
         firebase.setAndroidContext(this);
         firebase=new Firebase(FIREBASE_URL);
@@ -53,16 +54,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.Create:
                 Intent intent=new Intent(v.getContext(),CreateAccountActivity.class);
-                v.getContext().startActivity(intent);
+                startActivity(intent);
 
                 break;
 
             case R.id.login:
                 name=username.getText().toString();
+
                 pass=passw.getText().toString();
-                if(name.equals("")){
+                if(name.equals("") || pass.equals("")){
                     AlertDialog.Builder alerta=new AlertDialog.Builder(v.getContext());
-                    alerta.setMessage("username is required")
+                    alerta.setMessage("Los campos son requeridos")
                             .setCancelable(false)
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
@@ -71,21 +73,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 }
                             });
                     AlertDialog alert=alerta.create();
-                    alert.setTitle("Alert");
-                    alert.show();
-                }
-                else if(pass.equals("")){
-                    AlertDialog.Builder alerta=new AlertDialog.Builder(v.getContext());
-                    alerta.setMessage("password is required")
-                            .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    AlertDialog alert=alerta.create();
-                    alert.setTitle("Alert");
+                    alert.setTitle("Alerta");
                     alert.show();
                 }
                 else{
@@ -95,12 +83,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if(snapshot.hasChild(name)) {
                                 if (snapshot.child(name).child("password").getValue().toString().equals(pass)) {
                                     Intent intent=new Intent(v.getContext(),Principal.class);
+                                    LicenseV=snapshot.child(name).child("license").getValue().toString();
                                     intent.putExtra("name",name);
+                                    intent.putExtra("License",LicenseV);
                                     v.getContext().startActivity(intent);
                                 }
                                 else {
                                     AlertDialog.Builder alerta=new AlertDialog.Builder(v.getContext());
-                                    alerta.setMessage("Incorrect password")
+                                    alerta.setMessage("Usuario y/o contraseña incorrectas")
                                             .setCancelable(false)
                                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                 @Override
@@ -109,13 +99,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                 }
                                             });
                                     AlertDialog alert=alerta.create();
-                                    alert.setTitle("Alert");
+                                    alert.setTitle("Alerta");
                                     alert.show();
                                 }
                             }
                             else{
                                 AlertDialog.Builder alerta=new AlertDialog.Builder(v.getContext());
-                                alerta.setMessage("User not exist in database")
+                                alerta.setMessage("Usuario y/o contraseña incorrectas")
                                         .setCancelable(false)
                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                             @Override
@@ -124,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             }
                                         });
                                 AlertDialog alert=alerta.create();
-                                alert.setTitle("Alert");
+                                alert.setTitle("Alerta");
                                 alert.show();
                             }
                             }

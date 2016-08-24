@@ -2,6 +2,7 @@ package com.example.juangui.un_app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -28,7 +29,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public GoogleMap mMap;
-    public LocationManager locationManager;
+    double lat;
+    double longit;
+    String place;
 
 
     @Override
@@ -39,6 +42,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Intent intent=getIntent();
+        Bundle bundle= intent.getExtras();
+        lat=Double.parseDouble((String) bundle.get("lat"));
+        longit=Double.parseDouble((String) bundle.get("longit"));
+        place=(String) bundle.get("place");
 
     }
 
@@ -58,25 +67,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        /*MapView mapView;
-        Location loc = null;
-        double lat = loc.getLatitude();
-        double lon=loc.getLongitude();
-        Log.d("valor Latitud: ", String.valueOf(lat));
-        Log.d("valor Longitud: ", String.valueOf(lon));
+        LatLng places = new LatLng(lat,longit);
 
-        LatLng location=new LatLng(lat,lon);
-        */
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        MapView mapView;
+        mMap.addMarker(new MarkerOptions().position(places).title(place));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(places));
         //mMap.addMarker(new MarkerOptions().position(location).title("Marker in location"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         //googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
-        Log.d("valor Latitud: ", String.valueOf(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)));
-        Log.d("valor Latitud: ", String.valueOf(PackageManager.PERMISSION_GRANTED));
-
+        /*
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             Log.d("valor Latitud: ","if");
@@ -84,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             Log.d("valor Latitud: ","else");
             // Show rationale and request permission.
-        }
+        }*/
 
     }
 

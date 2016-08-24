@@ -9,13 +9,46 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.juangui.un_app.publish">
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioGrouposistema"
+        android:weightSum="1"
+        android:layout_below="@+id/radioGroupopciones"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/buttonpublish"
+        android:layout_toEndOf="@+id/buttonpublish">
+
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Am"
+            android:id="@+id/am"
+            android:layout_weight="0.60"
+            android:layout_below="@+id/PublishService"
+            android:layout_toRightOf="@+id/TextView20"
+            android:layout_toEndOf="@+id/TextView20" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pm"
+            android:id="@+id/pm"
+            android:layout_below="@+id/PublishService"
+            android:layout_toRightOf="@+id/buttoncancelpublish"
+            android:layout_toEndOf="@+id/buttoncancelpublish" />
+
+    </RadioGroup>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Publish Service"
+        android:text="Publicar Servicio"
         android:id="@+id/PublishService"
-        android:textSize="40dp"
+        android:textSize="30dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -23,11 +56,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Start Point"
+        android:text="Lugar y hora de salida"
         android:id="@+id/Startpoint"
         android:textSize="15dp"
-        android:layout_marginBottom="16dp"
-        android:layout_above="@+id/spinnerplaces"
+        android:layout_below="@+id/PublishService"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -35,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Finish Point"
+        android:text="Lugar de llegada"
         android:id="@+id/Finishpoint"
         android:textSize="15dp"
         android:layout_above="@+id/spinnerplaces1" />
@@ -63,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Quotas"
+        android:text="Cupos"
         android:id="@+id/TextView20"
         android:textSize="15dp"
         android:layout_above="@+id/spinnerquotas"
@@ -81,7 +113,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Publish"
+        android:text="Publicar"
         android:id="@+id/buttonpublish"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/buttoncancelpublish"
@@ -90,9 +122,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
+        android:text="Cancelar"
         android:id="@+id/buttoncancelpublish"
-        android:layout_alignBottom="@+id/buttonpublish"
+        android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/TextView20"
         android:layout_toEndOf="@+id/TextView20" />
     <RadioGroup
@@ -100,9 +132,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/radioGroupopciones"
         android:weightSum="1"
-        android:layout_above="@+id/Startpoint"
+        android:layout_below="@+id/Startpoint"
         android:layout_alignLeft="@+id/Startpoint"
-        android:layout_alignStart="@+id/Startpoint">
+        android:layout_alignStart="@+id/Startpoint"
+        android:layout_alignRight="@+id/spinnerplaces"
+        android:layout_alignEnd="@+id/spinnerplaces">
 
 
         <RadioButton
@@ -120,17 +154,49 @@
     android:layout_height="wrap_content"
     android:text="Volador"
     android:id="@+id/volador"
-            android:layout_below="@+id/PublishService"
-        android:layout_toRightOf="@+id/buttoncancelpublish"
-        android:layout_toEndOf="@+id/buttoncancelpublish" />
+            android:layout_alignTop="@+id/textView3"
+            android:layout_alignLeft="@+id/Startpoint"
+            android:layout_alignStart="@+id/Startpoint" />
+
     </RadioGroup>
 
-    <TextClock
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textClock"
-        android:layout_alignTop="@+id/spinnerplaces"
-        android:layout_alignRight="@+id/buttonpublish"
-        android:layout_alignEnd="@+id/buttonpublish"
-        android:layout_marginTop="21dp" />
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/Hour"
+        android:hint="Hora"
+        android:layout_below="@+id/radioGroupopciones"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/PublishService"
+        android:layout_toStartOf="@+id/PublishService" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=":"
+        android:id="@+id/textView3"
+        android:layout_gravity="right"
+        android:layout_weight="0.60"
+        android:layout_alignBaseline="@+id/Hour"
+        android:layout_alignBottom="@+id/Hour"
+        android:layout_alignRight="@+id/Hour"
+        android:layout_alignEnd="@+id/Hour" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/minutes"
+        android:hint="Minutos"
+        android:layout_alignTop="@+id/Hour"
+        android:layout_toEndOf="@+id/textView3"
+        android:layout_marginRight="100dp"
+        android:layout_alignLeft="@+id/PublishService"
+        android:layout_alignStart="@+id/PublishService" />
+
 </RelativeLayout>

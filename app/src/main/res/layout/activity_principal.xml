@@ -12,7 +12,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Publish Service"
+        android:text="Publicar Servicio"
         android:id="@+id/publish"
         android:layout_marginBottom="114dp"
         android:layout_alignParentBottom="true"
@@ -22,7 +22,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Look Services"
+        android:text="Ver Servicios"
         android:id="@+id/look"
         android:layout_alignTop="@+id/publish"
         android:layout_alignParentRight="true"
