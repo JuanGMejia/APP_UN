@@ -29,6 +29,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     String passw2;
     String License;
     View v;
+    boolean Constante=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,7 +144,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                                 @Override
                                 public void onDataChange(DataSnapshot snapshot) {
 
-                                    if (snapshot.hasChild(name)) {
+                                    if (snapshot.hasChild(name) && Constante) {
 
                                         AlertDialog.Builder alerta = new AlertDialog.Builder(v.getContext());
                                         alerta.setMessage("El usuario ya existe")
@@ -159,7 +160,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                                         alert.show();
                                     } else {
 
-
+                                        Constante=false;
                                         firebase = new Firebase(FIREBASE_URL).child(name);
                                         firebase.child("password").setValue(passw);
                                         firebase.child("vehicle").setValue(vehi);
@@ -172,7 +173,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                                         }
                                         Intent intent = new Intent(v.getContext(), LoginActivity.class);
                                         v.getContext().startActivity(intent);
-
                                     }
 
                                 }
