@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.juangui.un_app.publish">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioGrouposistema"
+        android:weightSum="1"
+        android:layout_below="@+id/radioGroupopciones"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/buttonpublish"
+        android:layout_toEndOf="@+id/buttonpublish">
+
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Am"
+            android:id="@+id/am"
+            android:layout_weight="0.60"
+            android:layout_below="@+id/PublishService"
+            android:layout_toRightOf="@+id/TextView20"
+            android:layout_toEndOf="@+id/TextView20" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pm"
+            android:id="@+id/pm"
+            android:layout_below="@+id/PublishService"
+            android:layout_toRightOf="@+id/buttoncancelpublish"
+            android:layout_toEndOf="@+id/buttoncancelpublish" />
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Publicar Servicio"
+        android:id="@+id/PublishService"
+        android:textSize="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Lugar y hora de salida"
+        android:id="@+id/Startpoint"
+        android:textSize="15dp"
+        android:layout_below="@+id/PublishService"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Lugar de llegada"
+        android:id="@+id/Finishpoint"
+        android:textSize="15dp"
+        android:layout_above="@+id/spinnerplaces1" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerplaces"
+        android:layout_above="@+id/Finishpoint"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/buttonpublish"
+        android:layout_toStartOf="@+id/buttonpublish" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerplaces1"
+        android:layout_above="@+id/TextView20"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Cupos"
+        android:id="@+id/TextView20"
+        android:textSize="15dp"
+        android:layout_above="@+id/spinnerquotas"
+        android:layout_alignLeft="@+id/spinnerplaces1"
+        android:layout_alignStart="@+id/spinnerplaces1" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerquotas"
+        android:layout_above="@+id/buttonpublish"
+        android:layout_alignLeft="@+id/TextView20"
+        android:layout_alignStart="@+id/TextView20" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Publicar"
+        android:id="@+id/buttonpublish"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/buttoncancelpublish"
+        android:layout_toEndOf="@+id/buttoncancelpublish" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+        android:id="@+id/buttoncancelpublish"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/TextView20"
+        android:layout_toEndOf="@+id/TextView20" />
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioGroupopciones"
+        android:weightSum="1"
+        android:layout_below="@+id/Startpoint"
+        android:layout_alignLeft="@+id/Startpoint"
+        android:layout_alignStart="@+id/Startpoint"
+        android:layout_alignRight="@+id/spinnerplaces"
+        android:layout_alignEnd="@+id/spinnerplaces">
+
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Minas"
+            android:id="@+id/minas"
+            android:layout_weight="0.60"
+            android:layout_below="@+id/PublishService"
+            android:layout_toRightOf="@+id/TextView20"
+            android:layout_toEndOf="@+id/TextView20" />
+
+        <RadioButton
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Volador"
+    android:id="@+id/volador"
+            android:layout_alignTop="@+id/textView3"
+            android:layout_alignLeft="@+id/Startpoint"
+            android:layout_alignStart="@+id/Startpoint" />
+
+    </RadioGroup>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/Hour"
+        android:hint="Hora"
+        android:layout_below="@+id/radioGroupopciones"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/PublishService"
+        android:layout_toStartOf="@+id/PublishService" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=":"
+        android:id="@+id/textView3"
+        android:layout_gravity="right"
+        android:layout_weight="0.60"
+        android:layout_alignBaseline="@+id/Hour"
+        android:layout_alignBottom="@+id/Hour"
+        android:layout_alignRight="@+id/Hour"
+        android:layout_alignEnd="@+id/Hour" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/minutes"
+        android:hint="Minutos"
+        android:layout_alignTop="@+id/Hour"
+        android:layout_toEndOf="@+id/textView3"
+        android:layout_marginRight="100dp"
+        android:layout_alignLeft="@+id/PublishService"
+        android:layout_alignStart="@+id/PublishService" />
+
+</RelativeLayout>
