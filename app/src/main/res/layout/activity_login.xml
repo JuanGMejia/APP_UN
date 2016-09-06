@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="UN transporte"
+        android:text="UN Transporte"
         android:id="@+id/textView"
         android:textSize="40sp"
         android:layout_alignParentTop="true"
@@ -40,30 +40,33 @@
         android:ems="10"
         android:id="@+id/username"
         android:hint="Usuario"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:layout_toRightOf="@+id/imageView3"
         android:layout_toEndOf="@+id/imageView3"
-        android:layout_above="@+id/passw" />
+        android:layout_above="@+id/passw"
+        android:layout_marginLeft="20dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/passw"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:hint="Contraseña"
-        android:layout_marginRight="10dp"
+        android:fontFamily="sans-serif"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/username"
         android:inputType="textPassword"
         android:layout_alignLeft="@+id/username"
         android:layout_alignStart="@+id/username"
         android:layout_above="@+id/switch1"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="30dp"
+        android:layout_alignRight="@+id/username"
+        android:layout_marginRight="20dp" />
 
     <ImageView
         android:layout_width="wrap_content"

@@ -2,18 +2,14 @@ package com.example.juangui.un_app;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -41,9 +37,9 @@ public class Principal extends AppCompatActivity implements View.OnClickListener
         Bundle bundle= intent.getExtras();
         name=(String) bundle.get("name");
         License=(String) bundle.get("License");
-        publish=(Button) findViewById(R.id.publish);
+        publish=(Button) findViewById(R.id.publishText);
         publish.setOnClickListener(this);
-        look=(Button) findViewById(R.id.look);
+        look=(Button) findViewById(R.id.lookText);
         look.setOnClickListener(this);
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -91,7 +87,7 @@ public class Principal extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.publish:
+            case R.id.publishText:
                 if(persona!=0) {
                     Intent intent = new Intent(this, publish.class);
                     intent.putExtra("name", name);
@@ -113,7 +109,7 @@ public class Principal extends AppCompatActivity implements View.OnClickListener
                     alert.show();
                 }
                 break;
-            case  R.id.look:
+            case  R.id.lookText:
                 if(ver) {
                     Intent intentlook = new Intent(this, lookservices.class);
                     intentlook.putExtra("name", name);
