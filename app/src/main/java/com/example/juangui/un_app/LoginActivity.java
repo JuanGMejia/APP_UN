@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String LicenseV;
     private String FIREBASE_URL="https://unapp-c52f0.firebaseio.com";
     Firebase firebase;
-    static boolean logeado = false;
+    boolean logeado = false;
 
     //This is our root url
     public static final String ROOT_URL = "http://sia.unalmed.edu.co/";
@@ -98,11 +98,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         String word = "Visitante";
                         if(cadena.contains(word)){
-                            LoginActivity.logeado = false;
+                            //Toast.makeText(LoginActivity.this, "Usuario y/o contraseña incorrectos", Toast.LENGTH_LONG).show();
+                            logeado = false;
                         } else {
                             //Acá se ponen las acciones al logearse
                             //Toast.makeText(LoginActivity.this, "Logeado!", Toast.LENGTH_LONG).show();
-                            LoginActivity.logeado = true;
+                            logeado = true;
                         }
 
                     }
@@ -119,15 +120,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(final View v) {
         logearUsuario();
-        if(LoginActivity.logeado)
+        if(logeado)
         {
-            Intent intent=new Intent(v.getContext(),Principal.class);
-            // HACER: Enviadr la licencia leida desde Firebase
-            //LicenseV=snapshot.child(name).child("license").getValue().toString();
-            LicenseV="Leer lic";
-            intent.putExtra("name",name);
-            intent.putExtra("License",LicenseV);
-            v.getContext().startActivity(intent);
+            Toast.makeText(LoginActivity.this, "Logeado", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(LoginActivity.this, "Usuario y/o contraseña incorrectos", Toast.LENGTH_LONG).show();
         }
