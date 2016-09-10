@@ -107,7 +107,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             //Acá se ponen las acciones al logearse
                             //Toast.makeText(LoginActivity.this, "Logeado!", Toast.LENGTH_LONG).show();
-                            firebase.createUser(usernamesia, password, new Firebase.ResultHandler() {
+
+                            firebase.createUser(usernamesia + "@unal.edu.co", password, new Firebase.ResultHandler() {
+
                                 @Override
                                 public void onSuccess() {
                                     // user was created
@@ -116,6 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 }
                                 @Override
                                 public void onError(FirebaseError firebaseError) {
+                                    Log.d("LLega _----------------> ", usernamesia + "@unal.edu.co");
                                     // there was an error]
                                     Toast.makeText(getApplicationContext(), "Fail",
                                             Toast.LENGTH_LONG).show();
@@ -141,25 +144,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.login:
                 user=username.getText().toString();
                 pass=passw.getText().toString();
-                firebase.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild(user)){
-                            guardado=dataSnapshot.child(user).child("password").getValue().toString();
-                            if(guardado.equals(pass)){
 
-                            }
-                        }
-                        else{
-                            postSia(user,pass);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
-                    }
-                });
+                postSia(user,pass);
+//                firebase.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        if(dataSnapshot.hasChild(user)){
+//                            guardado=dataSnapshot.child(user).child("password").getValue().toString();
+//                            if(guardado.equals(pass)){
+//
+//                            }
+//                        }
+//                        else{
+//                            //postSia(user,pass);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(FirebaseError firebaseError) {
+//
+//                    }
+//                });
 
                 break;
 
