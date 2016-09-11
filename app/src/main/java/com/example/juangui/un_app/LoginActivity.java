@@ -2,6 +2,7 @@ package com.example.juangui.un_app;
 
 import android.*;
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,12 +27,19 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -42,8 +50,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private String FIREBASE_URL = "https://unapp-c52f0.firebaseio.com";
     Firebase firebase;
-    FirebaseAuth mAuthListener;
-
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
+    ProgressDialog loading;
+    FirebaseUser userF;
 
     //This is our root url
     public static final String ROOT_URL = "http://sia.unalmed.edu.co/";
@@ -54,9 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         firebase.setAndroidContext(this);
         firebase = new Firebase(FIREBASE_URL);
-
-
-
+        mAuth = FirebaseAuth.getInstance();
         botonLogin = (Button) findViewById(R.id.login);
         username = (EditText) findViewById(R.id.username);
         passw = (EditText) findViewById(R.id.passw);
@@ -89,6 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void success(Response result, Response response) {
                         //On success we will read the server's output using bufferedreader
                         //Creating a bufferedreader object
+                        loading.getProgress();
                         BufferedReader reader = null;
                         //An string to store output from the server
                         String output = "";
@@ -101,27 +110,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String cadena = new String(((TypedByteArray) response.getBody()).getBytes());
                         String word = "Visitante";
                         if (cadena.contains(word)) {
-                            //Toast.makeText(LoginActivity.this, "Usuario y/o contraseña incorrectos", Toast.LENGTH_LONG).show();
-
+                            loading.dismiss();
+                            Toast.makeText(LoginActivity.this, "Usuario y/o contraseña incorrectos", Toast.LENGTH_LONG).show();
 
                         } else {
                             //Acá se ponen las acciones al logearse
-                            //Toast.makeText(LoginActivity.this, "Logeado!", Toast.LENGTH_LONG).show();
-
-                            firebase.createUser(usernamesia + "@unal.edu.co", password, new Firebase.ResultHandler() {
-
+                            loading.getProgress();
+                            mAuth.createUserWithEmailAndPassword(usernamesia + "@unal.edu.co", password)
+                                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
-                                public void onSuccess() {
-                                    // user was created
-                                    Toast.makeText(getApplicationContext(), "Pass",
-                                            Toast.LENGTH_LONG).show();
-                                }
-                                @Override
-                                public void onError(FirebaseError firebaseError) {
-                                    Log.d("LLega _----------------> ", usernamesia + "@unal.edu.co");
-                                    // there was an error]
-                                    Toast.makeText(getApplicationContext(), "Fail",
-                                            Toast.LENGTH_LONG).show();
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    loading.dismiss();
+                                    Toast.makeText(LoginActivity.this, "Logeado!", Toast.LENGTH_LONG).show();
                                 }
                             });
 
@@ -144,28 +144,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.login:
                 user=username.getText().toString();
                 pass=passw.getText().toString();
+                if(!user.equals("") && !pass.equals("")) {
+                    mAuth.signInWithEmailAndPassword(user + "@unal.edu.co", pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            Toast.makeText(LoginActivity.this, "Existe!", Toast.LENGTH_LONG).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            loading = ProgressDialog.show(LoginActivity.this, "Cargando", "Espera ...");
+                            postSia(user, pass);
 
-                postSia(user,pass);
-//                firebase.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        if(dataSnapshot.hasChild(user)){
-//                            guardado=dataSnapshot.child(user).child("password").getValue().toString();
-//                            if(guardado.equals(pass)){
-//
-//                            }
-//                        }
-//                        else{
-//                            //postSia(user,pass);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(FirebaseError firebaseError) {
-//
-//                    }
-//                });
-
+                        }
+                    });
+                }
+                else if(user.equals("") && pass.equals("")){
+                    Toast.makeText(LoginActivity.this, "¡Campos requeridos!", Toast.LENGTH_LONG).show();
+                }
+                else if(pass.equals("")){
+                    Toast.makeText(LoginActivity.this, "¡Contraseña requerida!", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(LoginActivity.this, "¡Usuario requerido!", Toast.LENGTH_LONG).show();
+                }
                 break;
 
 
