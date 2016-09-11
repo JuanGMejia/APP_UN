@@ -64,6 +64,7 @@ public class lookservices extends AppCompatActivity implements View.OnClickListe
         detailsfinish.setOnClickListener(this);
         detailsquotas=(TextView) findViewById(R.id.DetailsQuotas);
         detailslicense=(TextView) findViewById(R.id.DetailsLicense);
+
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot){
@@ -71,6 +72,7 @@ public class lookservices extends AppCompatActivity implements View.OnClickListe
                 Object array[]=json.keySet().toArray();
                 Ids= new String[array.length];
                 int j=0;
+
                 for(int i=0;i<Ids.length;i++){
                     String time = dataSnapshot.child("Service").child(array[i].toString()).child("Hour").getValue().toString();
                     String times[]=time.replace(".",",").split(",");

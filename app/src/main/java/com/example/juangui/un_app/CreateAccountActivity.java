@@ -1,8 +1,10 @@
 package com.example.juangui.un_app;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -64,6 +66,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         botoncancelar.setOnClickListener(this);
 
     }
+
+
 
     @Override
     public void onClick(final View v) {

@@ -63,7 +63,7 @@
         android:inputType="textPassword"
         android:layout_alignLeft="@+id/username"
         android:layout_alignStart="@+id/username"
-        android:layout_above="@+id/switch1"
+        android:layout_above="@+id/recordar"
         android:layout_marginBottom="30dp"
         android:layout_alignRight="@+id/username"
         android:layout_marginRight="20dp" />
@@ -114,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Recordar usuario "
-        android:id="@+id/switch1"
+        android:id="@+id/recordar"
         android:checked="false"
         android:textColor="@color/abc_secondary_text_material_light"
         android:layout_above="@+id/login"

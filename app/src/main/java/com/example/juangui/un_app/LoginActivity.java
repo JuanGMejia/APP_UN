@@ -4,8 +4,10 @@ import android.*;
 import android.Manifest;
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +58,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth mAuth;
     ProgressDialog loading;
     FirebaseUser userF;
+    Switch recordarUsuario;
+
 
     //This is our root url
     public static final String ROOT_URL = "http://sia.unalmed.edu.co/";
@@ -70,8 +75,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         username = (EditText) findViewById(R.id.username);
         passw = (EditText) findViewById(R.id.passw);
         botonLogin.setOnClickListener(this);
-
-
+        recordarUsuario=(Switch)findViewById(R.id.recordar);
+        CargarPreferencias();
     }
 
     private void postSia(final String usernamesia, final String password) {
@@ -127,26 +132,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             loading.dismiss();
-                                            AlertDialog.Builder alerta = new AlertDialog.Builder(LoginActivity.this);
-                                            alerta.setMessage("Cambio de contraseña")
-                                                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            dialog.cancel();
-                                                        }
-                                                    })
-                                                    .setPositiveButton("Cambiar", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            Intent cambiar = new Intent(LoginActivity.this, CreateAccountActivity.class);
-                                                            cambiar.putExtra("name", usernamesia);
-                                                            dialog.cancel();
-                                                            startActivity(cambiar);
-                                                        }
-                                                    });
-                                            AlertDialog alert = alerta.create();
-                                            alert.setTitle("Alerta");
-                                            alert.show();
+
+                                            GuardarPreferencias();
+                                            firebase.child("Users").child(usernamesia).child("Vehicles").child("Carro").child("Placa").setValue("");
+                                            firebase.child("Users").child(usernamesia).child("Vehicles").child("Carro").child("Capacidad").setValue("");
+                                            firebase.child("Users").child(usernamesia).child("Vehicles").child("Moto").child("Placa").setValue("");
+                                            firebase.child("Users").child(usernamesia).child("Vehicles").child("Moto").child("Capacidad").setValue("");
+                                            firebase.child("Users").child(usernamesia).child("Nombre").setValue("");
+                                            firebase.child("Users").child(usernamesia).child("Sexo").setValue("");
+                                            Toast.makeText(LoginActivity.this, "Tirar al tutorial", Toast.LENGTH_LONG).show();
                                         }
                                     });
 
@@ -166,6 +160,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         );
     }
 
+    public void CargarPreferencias(){
+        SharedPreferences mispreferencias=getSharedPreferences("Preferencias usuario", Context.MODE_PRIVATE);
+        if(mispreferencias.getBoolean("switch",false)){
+            recordarUsuario.setChecked(true);
+        }else {
+            recordarUsuario.setChecked(false);
+        }
+        username.setText(mispreferencias.getString("nombre",""));
+    }
+
+    public void GuardarPreferencias(){
+        SharedPreferences mispreferencias=getSharedPreferences("Preferencias usuario", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=mispreferencias.edit();
+        boolean valorswitch=recordarUsuario.isChecked();
+        editor.putBoolean("switch",valorswitch);
+        if (valorswitch){
+            editor.putString("nombre",username.getText().toString());
+        }
+        else{
+            editor.putString("nombre","");
+        }
+        editor.commit();
+
+    }
+
     @Override
     public void onClick(final View v) {
         switch (v.getId()){
@@ -173,9 +192,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 user=username.getText().toString().trim();
                 pass=passw.getText().toString().trim();
                 if(!user.equals("") && !pass.equals("")) {
-                    mAuth.signInWithEmailAndPassword(user + "@unal.edu.co", pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+
+                    mAuth.signInWithEmailAndPassword(user + "@unal.edu.co", pass)
+                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
+
+                            GuardarPreferencias();
                             Toast.makeText(LoginActivity.this, "Existe!", Toast.LENGTH_LONG).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
