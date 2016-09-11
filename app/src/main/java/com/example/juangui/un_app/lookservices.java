@@ -53,7 +53,7 @@ public class lookservices extends AppCompatActivity implements View.OnClickListe
         salir=(Button) findViewById(R.id.buttonCancel);
         Intent intent=getIntent();
         Bundle bundle= intent.getExtras();
-        name=(String) bundle.get("name");
+//        name=(String) bundle.get("name");
         go.setOnClickListener(this);
         salir.setOnClickListener(this);
         Dates = (Spinner) findViewById(R.id.spinnerDates);
@@ -115,7 +115,7 @@ public class lookservices extends AppCompatActivity implements View.OnClickListe
                     if(dataSnapshot.child("Service").child(user).hasChild("Customers")) {
                         custom = dataSnapshot.child("Service").child(user).child("Customers").getValue().toString();
                     }
-                    service=dataSnapshot.child(name).child("Service").getValue().toString();
+//                    service=dataSnapshot.child(name).child("Service").getValue().toString();
 
                         String array1[];
                         array1=dataSnapshot.child("Service").child(user).child("Customers").getValue().toString().split(",");
