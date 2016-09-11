@@ -2,6 +2,7 @@ package com.example.juangui.un_app;
 
 import android.*;
 import android.Manifest;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -50,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private String FIREBASE_URL = "https://unapp-c52f0.firebaseio.com";
     Firebase firebase;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+
     private FirebaseAuth mAuth;
     ProgressDialog loading;
     FirebaseUser userF;
@@ -115,13 +116,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         } else {
                             //Acá se ponen las acciones al logearse
+
                             loading.getProgress();
                             mAuth.createUserWithEmailAndPassword(usernamesia + "@unal.edu.co", password)
                                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    loading.dismiss();
-                                    Toast.makeText(LoginActivity.this, "Logeado!", Toast.LENGTH_LONG).show();
+                                    mAuth.signInWithEmailAndPassword(usernamesia+ "@unal.edu.co", password)
+                                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            loading.dismiss();
+                                            AlertDialog.Builder alerta = new AlertDialog.Builder(LoginActivity.this);
+                                            alerta.setMessage("Cambio de contraseña")
+                                                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            dialog.cancel();
+                                                        }
+                                                    })
+                                                    .setPositiveButton("Cambiar", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            Intent cambiar = new Intent(LoginActivity.this, CreateAccountActivity.class);
+                                                            cambiar.putExtra("name", usernamesia);
+                                                            dialog.cancel();
+                                                            startActivity(cambiar);
+                                                        }
+                                                    });
+                                            AlertDialog alert = alerta.create();
+                                            alert.setTitle("Alerta");
+                                            alert.show();
+                                        }
+                                    });
+
                                 }
                             });
 
@@ -142,8 +170,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(final View v) {
         switch (v.getId()){
             case R.id.login:
-                user=username.getText().toString();
-                pass=passw.getText().toString();
+                user=username.getText().toString().trim();
+                pass=passw.getText().toString().trim();
                 if(!user.equals("") && !pass.equals("")) {
                     mAuth.signInWithEmailAndPassword(user + "@unal.edu.co", pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
@@ -155,7 +183,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void onFailure(@NonNull Exception e) {
                             loading = ProgressDialog.show(LoginActivity.this, "Cargando", "Espera ...");
                             postSia(user, pass);
-
                         }
                     });
                 }
