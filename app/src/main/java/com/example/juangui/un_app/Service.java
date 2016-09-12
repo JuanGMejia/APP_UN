@@ -3,6 +3,15 @@ package com.example.juangui.un_app;
 class Service {
     String poster;
     String sexo_poster;
+    String hora_salida;
+    String lugar_salida;
+    String origen;
+    String lugar_llegada;
+    String destino;
+    String vehiculo;
+    String placa;
+    String capacidad;
+    String quota;
 
     public Service(String poster, String quota,
                    String capacidad, String vehiculo,
@@ -23,15 +32,7 @@ class Service {
         this.placa = placa;
     }
 
-    String hora_salida;
-    String lugar_salida;
-    String origen;
-    String lugar_llegada;
-    String destino;
-    String vehiculo;
-    String placa;
-    String capacidad;
-    String quota;
+
 
 
 }

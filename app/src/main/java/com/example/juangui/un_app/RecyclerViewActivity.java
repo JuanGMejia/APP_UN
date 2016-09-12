@@ -85,12 +85,10 @@ public class RecyclerViewActivity extends Activity {
                     else{
                         origen="Volador";
                     }
-                    Log.d("ID ________________> " ,"antes");
                     services.add(new Service(poster, quotas,
                             capacidad, Vehiculo, sexo,
                            Hour, Start,
                            origen, Finish, destino, Placa));
-                    Log.d("ID ________________> " ,"despues");
                     initializeAdapter();
                 }
             }
@@ -110,10 +108,10 @@ public class RecyclerViewActivity extends Activity {
         //services.add(new Service("Lillie Watts", "35 years old"));
         //services.add(new Service("Emma Wilson", "23 years old"));
         //services.add(new Service("Lavery Maiss", "25 years old"));
-//        services.add(new Service("1", "1",
-//                "1", "1", "1",
-//                "1", "1",
-//                "1", "1", "1", "1"));
+//       services.add(new Service("1", "1",
+//               "1", "1", "1",
+//               "1", "1",
+//               "1", "1", "1", "1"));
     }
 
     private void initializeAdapter(){

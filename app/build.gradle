@@ -53,6 +53,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.android.support:cardview-v7:21.0.3'
     compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile 'cat.ereza:customactivityoncrash:1.5.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
