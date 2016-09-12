@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ServiceDetail extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class ServiceDetail extends AppCompatActivity {
     TextView tvvehiculo;
     TextView tvplaca;
     TextView tvconductor;
+    ImageView ivvehiculo;
 
 
     @Override
@@ -49,6 +51,7 @@ public class ServiceDetail extends AppCompatActivity {
         tvvehiculo = (TextView) findViewById(R.id.tvvehiculo);
         tvplaca = (TextView) findViewById(R.id.tvplaca);
         tvconductor = (TextView) findViewById(R.id.tvconductor);
+        ivvehiculo = (ImageView) findViewById(R.id.ivvehiculo);
 
         Intent intent=getIntent();
         Bundle bundle= intent.getExtras();
@@ -78,11 +81,15 @@ public class ServiceDetail extends AppCompatActivity {
         tvDestino.setText(destino);
         tvlugar_llegada.setText(lugar_llegada);
         tvlugar_salida.setText(lugar_salida);
-        tvhora_salida.setText("Salida: " + hora_salida);
-        tvcupos.setText(quota + "/" + capacidad);
+        tvhora_salida.setText("Sale: " + hora_salida);
+        tvcupos.setText("Cupos libres: " + quota + "/" + capacidad);
         tvvehiculo.setText(vehiculo);
-        tvplaca.setText(placa);
+        tvplaca.setText(placa.toUpperCase());
         tvconductor.setText(poster);
+        if(vehiculo.equals("Moto"))
+        {
+            ivvehiculo.setImageResource(getResources().getIdentifier("bike", "mipmap", getPackageName()));
+        }
 
 
     }

@@ -108,10 +108,28 @@ public class RecyclerViewActivity extends Activity {
         //services.add(new Service("Lillie Watts", "35 years old"));
         //services.add(new Service("Emma Wilson", "23 years old"));
         //services.add(new Service("Lavery Maiss", "25 years old"));
-//       services.add(new Service("1", "1",
-//               "1", "1", "1",
-//               "1", "1",
-//               "1", "1", "1", "1"));
+        services.add(new Service("Felipe", "2",
+                "4", "Carro", "M",
+                "10:00. am", "Parqueadero bloque M8",
+                "Minas", "Parqueadero bloque 24", "Volador", "TFP897"));
+
+        services.add(new Service("Juan Guillermo", "1",
+                "1", "Moto", "M",
+                "1:00. pm", "Parqueadero bloque 12",
+                "Volador", "Parqueadero bloque M8", "Minas", "MEI18D"));
+        services.add(new Service("Felipe", "1",
+                "4", "Moto", "M",
+                "3:00. pm", "Parqueadero bloque M8",
+                "Minas", "Parqueadero bloque 24", "Volador", "TFP897"));
+
+        services.add(new Service("Juan Guillermo", "4",
+                "1", "Carro", "M",
+                "3:20. pm", "Parqueadero bloque 12",
+                "Minas", "Parqueadero bloque M8", "Volador", "MEI18D"));
+        services.add(new Service("Juan Guillermo", "3",
+                "1", "Carro", "M",
+                "5:00. pm", "Parqueadero bloque 12",
+                "Minas", "Parqueadero bloque M8", "Volador", "MEI18D"));
     }
 
     private void initializeAdapter(){

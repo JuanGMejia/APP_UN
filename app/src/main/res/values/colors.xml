@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#004c80</color>
     <color name="colorAccent">#2691da</color>
     <color name="color_stroke">#004C80</color>
+    <color name="color_placa">#ffd900</color>
 </resources>
