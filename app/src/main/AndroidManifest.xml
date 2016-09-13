@@ -58,6 +58,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity android:name=".Perfil" />
 
         <!--
@@ -75,7 +76,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".RecyclerViewActivity">
+        <activity android:name=".ShowServices">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

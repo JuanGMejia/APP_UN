@@ -18,7 +18,7 @@ import java.util.List;
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ServiceViewHolder>{
 
     public static Context context;
-    //context = this.Context(List<Service> services, RecyclerViewActivity recyclerViewActivity);
+    //context = this.Context(List<Service> services, ShowServices recyclerViewActivity);
 
 
     public static class ServiceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -51,6 +51,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ServiceViewHolder>
 
             int clickeado = getAdapterPosition();
 
+            detalleServicio.putExtra("conductor", services.get(clickeado).nombre);
             detalleServicio.putExtra("origen", services.get(clickeado).origen);
             detalleServicio.putExtra("destino", services.get(clickeado).destino);
             detalleServicio.putExtra("hora_salida", services.get(clickeado).hora_salida);
@@ -58,7 +59,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ServiceViewHolder>
             detalleServicio.putExtra("lugar_llegada", services.get(clickeado).lugar_llegada);
             detalleServicio.putExtra("quota", services.get(clickeado).quota);
             detalleServicio.putExtra("poster", services.get(clickeado).poster);
-            detalleServicio.putExtra("sexo_poster", services.get(clickeado).sexo_poster);
             detalleServicio.putExtra("placa", services.get(clickeado).placa);
             detalleServicio.putExtra("vehiculo", services.get(clickeado).vehiculo);
             detalleServicio.putExtra("capacidad", services.get(clickeado).capacidad);
@@ -102,7 +102,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ServiceViewHolder>
         if(services.get(i).origen.equals("Minas"))
         {
             personViewHolder.origen.setTextColor(Color.parseColor("#F0AB4E"));
-
             personViewHolder.destino.setTextColor(Color.parseColor("#1C892F"));
         } else {
             personViewHolder.origen.setTextColor(Color.parseColor("#1C892F"));
