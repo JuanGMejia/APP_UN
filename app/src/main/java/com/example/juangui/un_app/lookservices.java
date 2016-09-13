@@ -40,9 +40,6 @@ public class lookservices extends AppCompatActivity implements View.OnClickListe
     String service="";
     int compare;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

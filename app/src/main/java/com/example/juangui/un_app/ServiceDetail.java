@@ -2,9 +2,8 @@ package com.example.juangui.un_app;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,7 +55,7 @@ public class ServiceDetail extends AppCompatActivity {
         tvconductor = (TextView) findViewById(R.id.tvconductor);
         ivvehiculo = (ImageView) findViewById(R.id.ivvehiculo);
 
-
+        //Se obtienen de los extras los datos del servicio en particular
         Intent intent=getIntent();
         Bundle bundle= intent.getExtras();
 
@@ -72,8 +71,8 @@ public class ServiceDetail extends AppCompatActivity {
         vehiculo =(String) bundle.get("vehiculo");
         capacidad =(String) bundle.get("capacidad");
 
-        if(origen.equals("Minas"))
-        {
+        //Se pinta el texto "Minas" de anaranjada y "Volador" de verde
+        if (origen.equals("Minas")) {
             tvOrigen.setTextColor(Color.parseColor("#F0AB4E"));
             tvDestino.setTextColor(Color.parseColor("#1C892F"));
         } else {
@@ -85,19 +84,19 @@ public class ServiceDetail extends AppCompatActivity {
         tvDestino.setText(destino);
         tvlugar_llegada.setText(lugar_llegada);
         tvlugar_salida.setText(lugar_salida);
-        tvhora_salida.setText("Sale: " + hora_salida);
+        String salida = "Sale: " + hora_salida;
+        tvhora_salida.setText(salida);
         if(capacidad.equals("1")) {
             tvguia_cupos.setText("Cupo libre:");
         }
-        tvcupos.setText(quota + "/" + capacidad);
+        String cupos = quota + "/" + capacidad;
+        tvcupos.setText(cupos);
         tvvehiculo.setText(vehiculo);
         tvplaca.setText(placa.toUpperCase());
         tvconductor.setText(nombre);
-        if(vehiculo.equals("Moto"))
-        {
+        //Si el vehículo es una moto se cambia la imagen del servicio por una moto. El carro es por default
+        if (vehiculo.equals("Moto")) {
             ivvehiculo.setImageResource(getResources().getIdentifier("bike", "mipmap", getPackageName()));
         }
-
-
     }
 }

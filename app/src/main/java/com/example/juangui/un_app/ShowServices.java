@@ -5,12 +5,12 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +19,9 @@ public class ShowServices extends Activity {
 
     Firebase firebase;
     private String FIREBASE_URL = "https://unapp-c52f0.firebaseio.com";
-    // elemento de la interfaz que recibirá los múltiples servicios
+    //Elemento de la interfaz que recibirá los múltiples servicios
     private RecyclerView rv;
-    // lista de servicios que se actualizará cada que cambie la base de datos
+    //Lista de servicios que se actualizará cada que cambie la base de datos
     public static List<Service> services;
 
     @Override
@@ -39,47 +39,43 @@ public class ShowServices extends Activity {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
+        //Diágolo de espera mientras se cargan los servicios
         final ProgressDialog progress = ProgressDialog.show(this, "Cargando servicios",
                 "Espera un momento...", true);
 
+        //La acción de cargar servicios se hace en un nuevo hilo
         new Thread(new Runnable() {
             @Override
             public void run()
             {
-                // do the thing that takes a long time
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run()
                     {
+                        //Se le pasa el diálogo de espera para cancelarlo cuando termine
                         initializeData(progress);
-
                     }
                 });
             }
         }).start();
-
-
-//        initializeData();
     }
 
-    // obtiene los servicios de la base de datos
+    //Obtiene los servicios de la base de datos
     private void initializeData(final ProgressDialog progress) {
 
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // cada que cambie la base de datos se limpia la lista de servicios
+                //Cada que cambie la base de datos se limpia la lista de servicios
                 services.clear();
-                // hasmap de la lista de servicios
+                //Hashmap de la lista de servicios
                 HashMap jsonServices = (HashMap) dataSnapshot.child("Services").getValue();
-                // claves del json: usuarios
+                //Claves del json: usuarios
                 Object usuarios[] = jsonServices.keySet().toArray();
-                // recorrer cada usuario en el arreglo
+                //Recorrer cada usuario en el arreglo
                 int i = 0;
                 while (i < usuarios.length) {
-                    // obtener el string del usuario actual
-                    //TODO: Mirar si el usuario tiene nombre
+                    //Obtener el string del username actual
                     String poster = usuarios[i].toString();
                     String nombre = dataSnapshot.child("Users").child(usuarios[i].toString()).child("Name").getValue().toString();
                     DataSnapshot dsUsuario = dataSnapshot.child("Services").child(usuarios[i].toString());
@@ -93,8 +89,8 @@ public class ShowServices extends Activity {
                     String origen;
                     String destino;
 
-                    // con el usuario se buscan los vehiculos que posee y entre estos se busca
-                    // el que tiene la misma placa que el servicio, y se obtiene su tipo y capacidad
+                    //Con el usuario se buscan los vehiculos que posee y entre estos se busca
+                    //el que tiene la misma placa que el servicio, y se obtiene su tipo y capacidad
                     for (DataSnapshot child : dataSnapshot.child("Users").child(usuarios[i].toString()).child("Vehicles").getChildren()) {
                         if(child.child("Plate").getValue().toString().equals(Placa)) {
                             vehiculo = child.getKey();
@@ -102,20 +98,20 @@ public class ShowServices extends Activity {
                         }
                     }
 
-                    // según el parqueadero de llegada se obtiene el origen y el destino
+                    //Según el parqueadero de llegada se obtiene el origen y el destino
                     if (dataSnapshot.child("Minas").hasChild(Finish)) {
                         destino = "Minas";
                     } else {
                         destino = "Volador";
                     }
-                    // igualmente con el de salida
+                    //Igualmente con el de salida
                     if (dataSnapshot.child("Minas").hasChild(Start)) {
                         origen = "Minas";
                     } else {
                         origen = "Volador";
                     }
 
-                    // se agrega al hashmap un objeto service con las caracteristicas obtenidas
+                    //Se agrega al hashmap un objeto service con las caracteristicas obtenidas
                     services.add(new Service(nombre, poster, quotas,
                             capacidad, vehiculo,
                             Hour, Start,
@@ -124,6 +120,7 @@ public class ShowServices extends Activity {
                     initializeAdapter();
                     i++;
                 }
+                //Cerrar el diálogo de espera
                 progress.dismiss();
             }
 
@@ -136,9 +133,9 @@ public class ShowServices extends Activity {
 
     }
 
-    // adaptador que genera la vista
+    //Adaptador que genera la vista
     private void initializeAdapter() {
-        RVAdapter adapter = new RVAdapter(services, ShowServices.this);
+        ShowServicesAdapter adapter = new ShowServicesAdapter(services, ShowServices.this);
         rv.setAdapter(adapter);
     }
 }
