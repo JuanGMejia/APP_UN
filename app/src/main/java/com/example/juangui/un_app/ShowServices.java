@@ -27,7 +27,7 @@ public class ShowServices extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recyclerview_activity);
+        setContentView(R.layout.show_services_activity);
 
         firebase.setAndroidContext(this);
         firebase = new Firebase(FIREBASE_URL);

@@ -22,7 +22,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="UN Transporte"
         android:id="@+id/textView"
-        android:textSize="40sp"
+        android:textSize="35dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
@@ -31,7 +31,8 @@
         android:textStyle="bold"
         android:typeface="normal"
         android:singleLine="false"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/colorPrimary"
+        android:textAlignment="center" />
 
     <EditText
         android:layout_width="wrap_content"
