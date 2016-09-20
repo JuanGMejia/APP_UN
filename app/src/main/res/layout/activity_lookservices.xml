@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,36 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.juangui.un_app.lookservices">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pedir Cupo"
-        android:id="@+id/buttonGo"
-        android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="87dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Salir"
-        android:id="@+id/buttonCancel"
-        android:layout_alignTop="@+id/buttonGo"
-        android:layout_toRightOf="@+id/buttonGo"
-        android:layout_toEndOf="@+id/buttonGo"
-        android:layout_marginLeft="33dp"
-        android:layout_marginStart="33dp"
-        android:textStyle="bold" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerDates"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,13 +31,47 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="License: MEI18D"
+        android:id="@+id/DetailsLicense"
+        android:layout_below="@+id/DetailsQuotas"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="25dp"
+        android:textColor="#050000"
+        android:layout_gravity="center_horizontal|bottom" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pedir Cupo"
+        android:id="@+id/buttonGo"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="87dp"
+        android:layout_gravity="left|center_vertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Finish: Parqueadero M7"
         android:id="@+id/DetailsFinish"
         android:layout_below="@+id/DetailsStart"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textSize="25dp"
-        android:textColor="#1157fb" />
+        android:textColor="#1157fb"
+        android:layout_gravity="right|top" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerDates"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="left|bottom" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -78,18 +82,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textColor="#050000"
-        android:textSize="25dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="License: MEI18D"
-        android:id="@+id/DetailsLicense"
-        android:layout_below="@+id/DetailsQuotas"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:textSize="25dp"
-        android:textColor="#050000" />
+        android:layout_gravity="left|top" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -100,6 +94,20 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textColor="#050000"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:layout_gravity="center" />
 
-</RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salir"
+        android:id="@+id/buttonCancel"
+        android:layout_alignTop="@+id/buttonGo"
+        android:layout_toRightOf="@+id/buttonGo"
+        android:layout_toEndOf="@+id/buttonGo"
+        android:layout_marginLeft="33dp"
+        android:layout_marginStart="33dp"
+        android:textStyle="bold"
+        android:layout_gravity="left|bottom" />
+
+</FrameLayout>

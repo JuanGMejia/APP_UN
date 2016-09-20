@@ -40,9 +40,6 @@ public class lookservices extends AppCompatActivity implements View.OnClickListe
     String service="";
     int compare;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +50,7 @@ public class lookservices extends AppCompatActivity implements View.OnClickListe
         salir=(Button) findViewById(R.id.buttonCancel);
         Intent intent=getIntent();
         Bundle bundle= intent.getExtras();
-        name=(String) bundle.get("name");
+//        name=(String) bundle.get("name");
         go.setOnClickListener(this);
         salir.setOnClickListener(this);
         Dates = (Spinner) findViewById(R.id.spinnerDates);
@@ -64,6 +61,7 @@ public class lookservices extends AppCompatActivity implements View.OnClickListe
         detailsfinish.setOnClickListener(this);
         detailsquotas=(TextView) findViewById(R.id.DetailsQuotas);
         detailslicense=(TextView) findViewById(R.id.DetailsLicense);
+
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot){
@@ -71,6 +69,7 @@ public class lookservices extends AppCompatActivity implements View.OnClickListe
                 Object array[]=json.keySet().toArray();
                 Ids= new String[array.length];
                 int j=0;
+
                 for(int i=0;i<Ids.length;i++){
                     String time = dataSnapshot.child("Service").child(array[i].toString()).child("Hour").getValue().toString();
                     String times[]=time.replace(".",",").split(",");
@@ -115,7 +114,7 @@ public class lookservices extends AppCompatActivity implements View.OnClickListe
                     if(dataSnapshot.child("Service").child(user).hasChild("Customers")) {
                         custom = dataSnapshot.child("Service").child(user).child("Customers").getValue().toString();
                     }
-                    service=dataSnapshot.child(name).child("Service").getValue().toString();
+//                    service=dataSnapshot.child(name).child("Service").getValue().toString();
 
                         String array1[];
                         array1=dataSnapshot.child("Service").child(user).child("Customers").getValue().toString().split(",");

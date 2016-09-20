@@ -1,23 +1,24 @@
 package com.example.juangui.un_app;
 
-import android.*;
-import android.Manifest;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Switch;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import com.firebase.client.Firebase;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -25,58 +26,49 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
-    Button botonLogin;
-    //TextView createAccount;
-    EditText passw,username;
-    String pass;
-    String name;
-    String LicenseV;
-    private String FIREBASE_URL="https://unapp-c52f0.firebaseio.com";
-    Firebase firebase;
-    static boolean logeado = false;
-
-    //This is our root url
+    //URL raiz, exclusiva de la sede Medellín
     public static final String ROOT_URL = "http://sia.unalmed.edu.co/";
+    Button botonLogin;
+    EditText passw, username;
+    String user, pass;
+    Firebase firebase;
+    ProgressDialog loading;
+    Switch recordarUsuario;
+    private String FIREBASE_URL = "https://unapp-c52f0.firebaseio.com";
+    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
-
         firebase.setAndroidContext(this);
-        firebase=new Firebase(FIREBASE_URL);
-        //createAccount=(TextView) findViewById(R.id.Create);
+        firebase = new Firebase(FIREBASE_URL);
+        mAuth = FirebaseAuth.getInstance();
         botonLogin = (Button) findViewById(R.id.login);
-        username=(EditText) findViewById(R.id.username);
-        passw=(EditText) findViewById(R.id.passw);
+        username = (EditText) findViewById(R.id.username);
+        passw = (EditText) findViewById(R.id.passw);
         botonLogin.setOnClickListener(this);
-        //createAccount.setOnClickListener(this);
+        recordarUsuario = (Switch) findViewById(R.id.recordar);
+        CargarPreferencias();
     }
 
-    private void logearUsuario(){
-        //Here we will handle the http request to insert user to mysql db
-        //Creating a RestAdapter
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ROOT_URL) //Setting the Root URL
-                .build(); //Finally building the adapter
+    private void postSia(final String usernamesia, final String password) {
 
-        //Creating object for our interface
+        //Manejo del POST al SIA
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(ROOT_URL) //URL raíz
+                .build(); //Contrucción del adaptador
+
+        //Creando el objeto apra la interfaz
         RegisterAPI api = adapter.create(RegisterAPI.class);
 
-        //Defining the method insertuser of our interface
         api.logear(
 
-                //Passing the values by getting it from editTexts
-                username.getText().toString(),
-                passw.getText().toString(),
+                //Pasar los valores
+                usernamesia,
+                password,
 
                 //Creating an anonymous callback
                 new Callback<Response>() {
@@ -84,140 +76,114 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void success(Response result, Response response) {
                         //On success we will read the server's output using bufferedreader
                         //Creating a bufferedreader object
-                        BufferedReader reader = null;
-                        //An string to store output from the server
-                        String output = "";
+                        loading.getProgress();
 
-                        //Initializing buffered reader
-                        // reader = new BufferedReader(new InputStreamReader(result.getStatus()));
-
-                        //Reading the output in the string
-                        //output = reader.readLine();
                         String cadena = new String(((TypedByteArray) response.getBody()).getBytes());
-                        Log.d("---->", cadena);
-
                         String word = "Visitante";
-                        if(cadena.contains(word)){
-                            LoginActivity.logeado = false;
-                        } else {
-                            //Acá se ponen las acciones al logearse
-                            //Toast.makeText(LoginActivity.this, "Logeado!", Toast.LENGTH_LONG).show();
-                            LoginActivity.logeado = true;
-                        }
+                        //Si la respuesta contiene "Visitante" es porque no se logró iniciar sesión
+                        if (cadena.contains(word)) {
+                            loading.dismiss();
+                            Toast.makeText(LoginActivity.this, "Usuario y/o contraseña incorrectos", Toast.LENGTH_LONG).show();
 
+                        } else {
+                            //Si se logeó, se crea un usuario en la Firebase con correo institucional y contraseña
+
+                            loading.getProgress();
+                            mAuth.createUserWithEmailAndPassword(usernamesia + "@unal.edu.co", password)
+                                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            mAuth.signInWithEmailAndPassword(usernamesia + "@unal.edu.co", password)
+                                                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                                            //Cuando se crea el usuario satisfactoriamente, se crean los campos que le corresponden
+                                                            loading.dismiss();
+                                                            GuardarPreferencias();
+                                                            firebase.child("Users").child(usernamesia).child("Vehicles").child("Carro").child("Placa").setValue("");
+                                                            firebase.child("Users").child(usernamesia).child("Vehicles").child("Carro").child("Capacity").setValue("");
+                                                            firebase.child("Users").child(usernamesia).child("Vehicles").child("Moto").child("Placa").setValue("");
+                                                            firebase.child("Users").child(usernamesia).child("Vehicles").child("Moto").child("Capacity").setValue("");
+                                                            firebase.child("Users").child(usernamesia).child("Name").setValue("");
+                                                            //Acción cuando se registra un usuario nuevo
+                                                            Toast.makeText(LoginActivity.this, "Tirar al tutorial", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+                                        }
+                                    });
+                        }
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
                         //If any error occured displaying the error as toast
-                        Toast.makeText(LoginActivity.this, error.toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
         );
     }
 
-    @Override
-    public void onClick(final View v) {
-        logearUsuario();
-        if(LoginActivity.logeado)
-        {
-            Intent intent=new Intent(v.getContext(),Principal.class);
-            // HACER: Enviadr la licencia leida desde Firebase
-            //LicenseV=snapshot.child(name).child("license").getValue().toString();
-            LicenseV="Leer lic";
-            intent.putExtra("name",name);
-            intent.putExtra("License",LicenseV);
-            v.getContext().startActivity(intent);
+    public void CargarPreferencias() {
+        //Si el usuario eligió "guardar usuario" se le muestra cuando se abre el login
+        SharedPreferences mispreferencias = getSharedPreferences("Preferencias usuario", Context.MODE_PRIVATE);
+        if (mispreferencias.getBoolean("switch", false)) {
+            recordarUsuario.setChecked(true);
         } else {
-            Toast.makeText(LoginActivity.this, "Usuario y/o contraseña incorrectos", Toast.LENGTH_LONG).show();
+            recordarUsuario.setChecked(false);
         }
-
-        // acá está el logeo de firebase original
-        /*
-        switch (v.getId()){
-            case R.id.Create:
-                Intent intent=new Intent(v.getContext(),CreateAccountActivity.class);
-                startActivity(intent);
-
-                break;
-
-            case R.id.login:
-                name=username.getText().toString();
-
-                pass=passw.getText().toString();
-                if(name.equals("") || pass.equals("")){
-                    AlertDialog.Builder alerta=new AlertDialog.Builder(v.getContext());
-                    alerta.setMessage("Los campos son requeridos")
-                            .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    AlertDialog alert=alerta.create();
-                    alert.setTitle("Alerta");
-                    alert.show();
-                }
-                else{
-                    firebase.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            if(snapshot.hasChild(name)) {
-                                if (snapshot.child(name).child("password").getValue().toString().equals(pass)) {
-                                    Intent intent=new Intent(v.getContext(),Principal.class);
-                                    LicenseV=snapshot.child(name).child("license").getValue().toString();
-                                    intent.putExtra("name",name);
-                                    intent.putExtra("License",LicenseV);
-                                    v.getContext().startActivity(intent);
-                                }
-                                else {
-                                    AlertDialog.Builder alerta=new AlertDialog.Builder(v.getContext());
-                                    alerta.setMessage("Usuario y/o contraseña incorrectas")
-                                            .setCancelable(false)
-                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.cancel();
-                                                }
-                                            });
-                                    AlertDialog alert=alerta.create();
-                                    alert.setTitle("Alerta");
-                                    alert.show();
-                                }
-                            }
-                            else{
-                                AlertDialog.Builder alerta=new AlertDialog.Builder(v.getContext());
-                                alerta.setMessage("Usuario y/o contraseña incorrectas")
-                                        .setCancelable(false)
-                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                                AlertDialog alert=alerta.create();
-                                alert.setTitle("Alerta");
-                                alert.show();
-                            }
-                            }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
-                }
-
-
-
-                break;
-
-
-            default:
-                break;
-        } */
+        username.setText(mispreferencias.getString("nombre", ""));
     }
 
+    public void GuardarPreferencias() {
+        //Guarda las preferencias
+        SharedPreferences mispreferencias = getSharedPreferences("Preferencias usuario", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mispreferencias.edit();
+        boolean valorswitch = recordarUsuario.isChecked();
+        editor.putBoolean("switch", valorswitch);
+        //Guarda el nomrbe de usuario si el usuario lo eligió
+        if (valorswitch) {
+            editor.putString("nombre", username.getText().toString());
+        } else {
+            editor.putString("nombre", "");
+        }
+        editor.apply();
+    }
 
+    @Override
+    public void onClick(final View v) {
+        switch (v.getId()) {
+            //Cuando se hace click al botón Login
+            case R.id.login:
+                user = username.getText().toString().trim();
+                pass = passw.getText().toString().trim();
+                //Se verifica que el usuario y contraseña no estén vacíos
+                if (!user.equals("") && !pass.equals("")) {
+                    mAuth.signInWithEmailAndPassword(user + "@unal.edu.co", pass)
+                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+                                    //Si se logró ahcer login contra la Firebase
+                                    GuardarPreferencias();
+                                    Toast.makeText(LoginActivity.this, "Existe!", Toast.LENGTH_LONG).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //Si falla el login contra la Firebase se intenta hacer un POST al sia para
+                            //ver si existe el usuario
+                            loading = ProgressDialog.show(LoginActivity.this, "Cargando", "Espera ...");
+                            postSia(user, pass);
+                        }
+                    });
+                } else if (user.equals("") && pass.equals("")) {
+                    //Se verifica que no haya algún campo vacío
+                    Toast.makeText(LoginActivity.this, "¡Campos requeridos!", Toast.LENGTH_LONG).show();
+                } else if (pass.equals("")) {
+                    Toast.makeText(LoginActivity.this, "¡Contraseña requerida!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "¡Usuario requerido!", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
 }
